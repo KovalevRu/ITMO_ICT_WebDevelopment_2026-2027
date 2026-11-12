@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Практика 3 (HTTP Страница) - Отчет по лабораторной работе №1</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u041f\u0440\u0430\u043a\u0442\u0438\u043a\u0430 3 (HTTP \u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430)";
+        var mkdocs_page_input_path = "practice_3.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Отчет по лабораторной работе №1
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Титульный лист</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../practice_1/">Практика 1 (UDP)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../practice_2/">Практика 2 (TCP Вычисления)</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Практика 3 (HTTP Страница)</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#serverpy">Сервер (server.py)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_1">Результаты работы</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../practice_4/">Практика 4 (TCP Чат)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../practice_5/">Практика 5 (Web Сервер)</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Отчет по лабораторной работе №1</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Практика 3 (HTTP Страница)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="3-html-http">Практическое задание 3. Раздача HTML-страницы по HTTP</h1>
+<p><strong>Задача:</strong> Вернуть клиенту (веб-браузеру) содержимое файла <code>index.html</code> с использованием корректных HTTP-заголовков.</p>
+<h2 id="serverpy">Сервер (<code>server.py</code>)</h2>
+<pre><code class="language-python">import socket
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(('127.0.0.1', 9090))
+server.listen(1)
+
+while True:
+    conn, addr = server.accept()
+    conn.recv(1024) 
+
+    with open('index.html', 'r', encoding='utf-8') as file:
+        html_body = file.read()
+
+    response = f&quot;HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n{html_body}&quot;
+
+    conn.send(response.encode('utf-8'))
+    conn.close()
+</code></pre>
+<h2 id="_1">Результаты работы</h2>
+<p><img alt="Результат работы HTTP" src="../imgs/clientpw3.png" /></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../practice_2/" class="btn btn-neutral float-left" title="Практика 2 (TCP Вычисления)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../practice_4/" class="btn btn-neutral float-right" title="Практика 4 (TCP Чат)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../practice_2/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../practice_4/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
